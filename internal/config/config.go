@@ -9,9 +9,10 @@ import (
 )
 
 type Config struct {
-	Env         string `yaml:"env" env-default:"local"`
-	StoragePath string `yaml:"storage_path" env-required:"true"`
-	HTTPServer  `yaml:"http_server"`
+	Env          string `yaml:"env" env-default:"local"`
+	StoragePath  string `yaml:"storage_path" env-required:"true"`
+	HTTPServer   `yaml:"http_server"`
+	DBConnection `yaml:"db_connection"`
 }
 
 type HTTPServer struct {
@@ -20,6 +21,15 @@ type HTTPServer struct {
 	IdleTimeout time.Duration `yaml:"idle_timeout" env-default:"60s"`
 	User        string        `yaml:"user" env-required:"true"`
 	Password    string        `yaml:"password" env-required:"true" env:"HTTP_SERVER_PASSWORD"`
+}
+
+type DBConnection struct {
+	Host     string `yaml:"host" env-required:"true"`
+	Port     string `yaml:"port" env-required:"true"`
+	User     string `yaml:"db_user" env-required:"true"`
+	Password string `yaml:"db_password" env-required:"true"`
+	DBName   string `yaml:"db_name" env-required:"true"`
+	SSLMode  string `yaml:"ssl_mode" env-required:"true"`
 }
 
 func MustLoad() *Config {
